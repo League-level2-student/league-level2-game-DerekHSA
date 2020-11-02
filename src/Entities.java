@@ -1,4 +1,3 @@
-import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class Entities {
@@ -21,9 +20,14 @@ public class Entities {
 		 
 	 }
 	 public void update() {
+		 if(isActive==true) {
 		 collisionBox.setBounds(x, y, width, height);
+		 }
 	 }
- public void draw(Graphics g) {
-		 
-	 }
+ public void refresh(int x, int y, int width, int height) {
+	 this.x=x;
+	 this.y=y;
+	 this.width=width;
+	 this.height=height;
+ }
 }

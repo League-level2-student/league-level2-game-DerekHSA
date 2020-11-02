@@ -20,7 +20,7 @@ public void setup() {
 	frame.setResizable(false);
 	frame.setVisible(true);
 	frame.addKeyListener(lj);
-	
+	frame.addMouseListener(lj);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
 	

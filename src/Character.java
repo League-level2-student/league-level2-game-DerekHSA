@@ -6,57 +6,53 @@ boolean right = false;
 boolean left = false;
 boolean down = false;
 boolean up = false;
+
+
 public Character(int x, int y, int height, int width) {
 	super(x,y,height,width);
 	speed = 10;
 }
 int fo=0;
 public void draw(Graphics g) {
-	g.setColor(Color.BLUE);
+	g.setColor(Color.WHITE);
 	g.fillRect(x, y, width, height);
+	g.setColor(Color.BLUE);
+	g.fillRect(x+5, y+5, width-10, height-10);
 	
 }
 public void update() {
 	super.update();
 	
-	if (right==true) {
+	
+	if (right==true&&x<=MainTab.WIDTH-width-21) {
 		
 		right();
-	}if (left==true) {
+	}if (left==true&&x>=7) {
 		left();
-	}if (up==true) {
+	}if (up==true&&y>=7) {
 		up();
-	}if (down==true) {
+	}if (down==true&&y<=MainTab.HEIGHT-92) {
 		down();
-	}
-}
+	}}
+
 public void up() {
-	if (LilJumper.CURRENTROOM==LilJumper.ROOM1) {
-	if (y>=20) {
-		y-=speed;
+	
+y-=speed;
 	}
-	}
+
+public void right() {
+	
+x+=speed;
 	
 }
-public void right() {
-	if (LilJumper.CURRENTROOM==LilJumper.ROOM1) {
-	if (x<=1420) {
-	x+=speed;
-	}
-	}
-}
 public void left() {
-	if (LilJumper.CURRENTROOM==LilJumper.ROOM1) {
-		if (x>=20) {
-			x-=speed;
-		}
-	}
+	
+x-=speed;
+	
 }
 public void down() {
-	if (LilJumper.CURRENTROOM==LilJumper.ROOM1) {	
-		if(y<=881) {
-	y+=speed;
-		}
-	}
+	
+y+=speed;	
+	
 }
 }
