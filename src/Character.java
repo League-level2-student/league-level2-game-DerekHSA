@@ -6,7 +6,7 @@ boolean right = false;
 boolean left = false;
 boolean down = false;
 boolean up = false;
-
+int items = 0;
 
 public Character(int x, int y, int height, int width) {
 	super(x,y,height,width);

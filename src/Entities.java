@@ -1,4 +1,7 @@
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
 
 public class Entities {
 	Rectangle collisionBox;
@@ -8,6 +11,7 @@ public class Entities {
 	 int height;
 	 int speed = 10;
 	 boolean isActive = true;
+	 
 	 public Entities(int x, int y, int width, int height) {
 		 collisionBox = new Rectangle();
 		 this.x=x;
@@ -19,6 +23,7 @@ public class Entities {
 		
 		 
 	 }
+	 
 	 public void update() {
 		 if(isActive==true) {
 		 collisionBox.setBounds(x, y, width, height);

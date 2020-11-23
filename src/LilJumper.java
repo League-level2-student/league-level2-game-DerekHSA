@@ -4,11 +4,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URL;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,13 +28,22 @@ public static final int ROOM2 = 2;
 public static final int ROOM3 = 3;
 public static final int ROOM4 = 4;
 JFrame Inven;
-JPanel panel;
-JLabel label;
+JPanel InvenPanel;
+JLabel swordPic;
+JLabel swordName;
+JLabel swordDesc;
+JLabel scissorsPic;
+JLabel scissorsName;
+JLabel scissorsDesc;
+JLabel keyPic;
+JLabel keyName;
+JLabel keyDesc;
 Sword s;
 int sX;
 int sY;
 int swordDirect = 1;
 
+int panelY = 400;
 Font title;
 Font instructions;
 int gravity = 10;
@@ -41,19 +54,39 @@ final int MENU = 0;
 final int END = 2;
 Timer frameDraw;
 Character c;
-Dimension d;
+
+
 	public LilJumper() {
 		title = new Font(Font.MONOSPACED, Font.BOLD, 100);
+		
 		instructions = new Font(Font.MONOSPACED, Font.ITALIC , 25);
 		c  =new Character(300,500,50,50);
 		frameDraw = new Timer(1000/60,this);
 		frameDraw.start();
 		Inven = new JFrame();
 		Inven.setVisible(false);
-		panel = new JPanel();
-		d = new Dimension(500,500);
-		Inven.setSize(d);
-		Inven.add(panel);
+		InvenPanel = new JPanel();
+		swordPic =loadImage("SwordInvenPic.png");
+		swordName = new JLabel("Sword");
+		swordDesc = new JLabel("It is very shiny. I think it can cut through monster flesh. Why don't you test it out?");
+		scissorsPic=loadImage("ScissorsInvenPic.png");
+		scissorsName = new JLabel("Scissors");
+		scissorsDesc = new JLabel("There is no way you can fight with this...but...maybe...");
+		keyPic=loadImage("KeyInvenPic.png");
+		keyName= new JLabel("Key");
+		keyDesc=new JLabel("A small key, it will work on a locked door.");
+		
+		InvenPanel.setLayout(new GridLayout(0, 3));
+		
+		
+		Inven.add(InvenPanel);
+		SwordInven(false);
+		ScissorsInven(false);
+		KeyInven(false);
+		
+
+
+		
 		s = new Sword(c.x,c.y,10,50, false);
 		em = new EntitieManager(c,s);
 		
@@ -73,7 +106,46 @@ Dimension d;
 			drawEndState(g);
 		}
 	}
-	
+	private JLabel loadImage(String fileName) {
+		URL imageURL = getClass().getResource(fileName);
+		Icon icon = new ImageIcon(imageURL);
+		return new JLabel(icon);
+	}
+	void SwordInven(boolean visible) {
+		if(visible==true) {
+			InvenPanel.add(swordPic);
+			InvenPanel.add(swordName);
+			InvenPanel.add(swordDesc);
+		}else {
+			InvenPanel.remove(swordPic);
+			InvenPanel.remove(swordName);
+			InvenPanel.remove(swordDesc);
+		}
+	}
+	void ScissorsInven(boolean visible) {
+		if(visible==true) {
+			InvenPanel.add(scissorsPic);
+			InvenPanel.add(scissorsName);
+			InvenPanel.add(scissorsDesc);
+		}else {
+			InvenPanel.remove(scissorsPic);
+			InvenPanel.remove(scissorsName);
+			InvenPanel.remove(scissorsDesc);
+		}
+	}
+	void KeyInven(boolean visible) {
+		if(visible==true) {
+			InvenPanel.add(keyPic);
+			InvenPanel.add(keyName);
+			InvenPanel.add(keyDesc);
+			
+		}else {
+			InvenPanel.remove(keyPic);
+			InvenPanel.remove(keyName);
+			InvenPanel.remove(keyDesc);
+			
+		}
+	}
 	public void drawGameState(Graphics g) {
 		if(currentRoom==1) {
 		g.setColor(Color.BLACK);
@@ -93,6 +165,7 @@ Dimension d;
 		
 	}
 	public void drawMenuState(Graphics g) {
+		
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, MainTab.WIDTH, MainTab.HEIGHT);
 		g.setFont(title);
@@ -114,30 +187,100 @@ Dimension d;
 	}
 	
 	public void updateGameState() { 
+		Inven.pack();
+		if(em.remove==true) {
+			SwordInven(false);
+			ScissorsInven(false);
+			KeyInven(false);
+		}
 		em.update(currentRoom);
+		if(s.Obtained==true&&em.scissors==false) {
+			SwordInven(true);
+			
+		}
+		if(s.Obtained==true&&em.scissors==true) {
+			ScissorsInven(true);
+			
+		}
+		if(em.key1==true&&em.unlocked==false) {
+			KeyInven(true);
+			
+		}else if(em.Key2==true&&em.unlocked2==false) {
+			KeyInven(true);
+		}else if(em.Key2==true&&em.unlocked2==true) {
+			KeyInven(false);
+		}else if(em.key1==true&&em.unlocked==true) {
+			KeyInven(false);
+		}
+			if(em.unlocked==true) {
+		
+			
+		}
 		if(currentRoom!=em.currentRoom) {
 			currentRoom=em.currentRoom;
 		}
 		if(swordDirect==1) {
-			sX = c.x+2;
-			sY = c.y-50;
-			s.width = 10;
-			s.height = 50;
+			
+			if(em.scissors==false) {
+				sX = c.x-2;
+				sY = c.y-70;
+				s.width = 30;
+				s.height = 100;
+			s.loadImage("SwordU.png");
+			}else if(em.scissors==true) {
+				sX = c.x;
+				sY = c.y-25;
+				s.width = 19;
+				s.height = 28;
+			s.loadImage("ScissorsU.png");
+			}
 		}else if(swordDirect==2) {
-			sX=c.x-50;
-			sY=c.y+38;
-			s.width = 50;
-			s.height = 10;
+			
+			if(em.scissors==false) {
+				sX=c.x-70;
+				sY=c.y+22;
+				s.width = 100;
+				s.height = 30;
+				s.loadImage("SwordL.png");
+				
+				}else if(em.scissors==true) {
+					sX=c.x-25;
+					sY=c.y+30;
+					s.width = 28;
+					s.height = 19;
+				s.loadImage("ScissorsL.png");
+				
+				}
 		}else if(swordDirect==3) {
-			sX=c.x+50;
-			sY=c.y+2;
-			s.width = 50;
-			s.height = 10;
+			
+			if(em.scissors==false) {
+				s.loadImage("SwordR.png");
+				sX=c.x+20;
+				sY=c.y-2;
+				s.width = 100;
+				s.height = 30;
+				}else if(em.scissors==true) {
+				s.loadImage("ScissorsR.png");
+				sX=c.x+48;
+				sY=c.y;
+				s.width = 28;
+				s.height = 19;
+				}
 		}else if(swordDirect==4) {
-			sX=c.x+38;
-			sY=c.y+50;
-			s.width = 10;
-			s.height = 50;
+			
+			if(em.scissors==false) {
+				sX=c.x+22;
+				sY=c.y+20;
+				s.width = 30;
+				s.height = 100;
+				s.loadImage("SwordD.png");
+				}else if(em.scissors==true) {
+					sX=c.x+30;
+					sY=c.y+46;
+					s.width = 19;
+					s.height = 28;
+				s.loadImage("ScissorsD.png");
+				}
 		}
 		s.update(sX, sY);
 		
@@ -182,10 +325,12 @@ Dimension d;
 		}
 		}else if(currentState==0) {
 			if(arg0.getKeyCode()==KeyEvent.VK_SPACE) {
-				JOptionPane.showMessageDialog(null, "WASD for movement\nSpace key to attack\nE to open inventory");
+				JOptionPane.showMessageDialog(null, "WASD for movement\nE to open inventory");
 			}else if(arg0.getKeyCode()==KeyEvent.VK_ENTER) {
 				currentState=1;
 				em.room1();
+			}else if(arg0.getKeyCode()==KeyEvent.VK_B) {
+				em.scissors=true;
 			}
 		}
 	}

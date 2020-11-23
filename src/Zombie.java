@@ -17,6 +17,7 @@ public void draw(Graphics g){
 	}
 }
 public void aUpdate(Character c) {
+	if(x<=MainTab.WIDTH&&y<=MainTab.HEIGHT&&x>=0&&y>-0) {
 	attack(c);
 	if(x>=MainTab.WIDTH) {
 		x-=speed+1;
@@ -26,7 +27,7 @@ public void aUpdate(Character c) {
 		y-=speed+1;
 	}else if(y<=0) {
 		y+=speed+1;
-	}
+	}}
 }
 public void attack(Character c) {
 	

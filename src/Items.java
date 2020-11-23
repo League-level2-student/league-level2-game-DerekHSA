@@ -1,7 +1,10 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 public class Items {
  boolean Obtained;
@@ -11,6 +14,7 @@ public class Items {
  int width;
  int height;
  ArrayList<Projectiles> pro;
+ 
 public Items(int x, int y, int width, int height, boolean Obtained) {
 collisionBox = new Rectangle();
 	pro = new ArrayList<Projectiles>();
@@ -20,6 +24,7 @@ collisionBox = new Rectangle();
 	 this.height=height;
 	this.Obtained=Obtained;
 }
+
 public void shoot() {
 	pro.add(new Projectiles(x,y,10,10));
 }
@@ -35,6 +40,8 @@ public void update(int tX, int tY) {
 	if(Obtained==true) {
 	move(tX,tY);
 	collisionBox.setBounds(x, y, width, height);
+	}else {
+		collisionBox.setBounds(x+10000, y, width, height);
 	}
 }
 public void move(int tX, int tY) {
